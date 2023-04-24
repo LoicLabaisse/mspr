@@ -1,10 +1,12 @@
 import {StatusBar} from 'expo-status-bar';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import Routes from "./src/Routes/Routes";
+import Routes from "./src/Navigations/Authentificate.route";
 import {NavigationContainer} from "@react-navigation/native";
-import React from "react";
+import React, {useState} from "react";
+
 
 const App: React.FC = () => {
+
     return (
 
             <NavigationContainer>

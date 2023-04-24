@@ -8,9 +8,10 @@ import {
     TextInput,
     Pressable,
     TouchableOpacity,
-    Keyboard, TouchableWithoutFeedback
+    Keyboard, TouchableWithoutFeedback, Alert
 } from "react-native";
 import {RadioButton, Switch} from 'react-native-paper';
+import styles from "./SignInStyle";
 
 
 // @ts-ignore
@@ -23,11 +24,20 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 
 const SignUp: React.FC = () => {
 
-    const [name, setName] = useState<string>();
-    const [email, setEmail] = useState<string>();
-    const [password, setPassword] = useState<string>();
+    const [name, setName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     const [isClient, setIsClient] = useState<boolean>(true);
     const [isRevendeur, setIsRevendeur] = useState<boolean>(false);
+    const regex = /^[^\s@]+@[^\s@]+\.(com|fr)$/i;
+    const regexMajuscule = /^(?=.*[A-Z]).{5,}$/;
+
+    // Gestion d'erreur
+
+    const [errorPassword, setErrorPassword] = useState<boolean>(false)
+    const [errorEmail, setErrorEmail] = useState<boolean>(false)
+    const [errorStatus,setErrorStatus]= useState<boolean>(false)
+
 
     const [showPassword, setShowPassword] = useState<boolean>(true)
 
@@ -45,155 +55,133 @@ const SignUp: React.FC = () => {
     }
 
 
-    console.log(password)
+    const handleSubmit = () => {
+
+        // Vérification du status Client ou Revendeur
+        if(!isClient && !isRevendeur){
+            Alert.alert('Attention !', 'Tu doit avoir au moins un status pour pouvoir continuer ( Client / Revendeur )', [
+                {
+                    text: 'Annuler',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]);
+        }else{
+            // Vérification de l'email
+            if (regex.test(email)) {
+                console.log("l'adresse email est valide")
+                // Verification du mot de passe (5 caractères mini / une majuscule)
+                if (regexMajuscule.test(password)) {
+                    console.log("le mot de passe est valide")
+                    // appel axios du back
+                } else {
+                    console.log("le mot de passe n'est pas valide")
+                    setErrorPassword(true)
+                }
+
+            } else {
+                console.log("l'adresse email est invalide")
+                setErrorEmail(true)
+            }
+        }
+
+
+    }
+
     return (
         <SafeAreaView style={{flex: 1}}>
             <StatusBar barStyle={"dark-content"}/>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={{flex: 1}}>
-                <View style={styles.header}>
-                    <View style={styles.headerLogo}/>
-                    <Text style={styles.headerTitle}>Inscription</Text>
-                    <Text onPress={() => navigation.navigate("Connexion")} style={styles.headerSignIn}>Connexion</Text>
-                </View>
+                <View style={{flex: 1}}>
+                    <View style={styles.header}>
+                        <View style={styles.headerLogo}/>
+                        <Text style={styles.headerTitle}>Inscription</Text>
+                        <Text onPress={() => navigation.navigate("Connexion")}
+                              style={styles.headerSignIn}>Connexion</Text>
+                    </View>
 
-                <View style={{marginTop: 30}}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder={"Nom"}
-                        onChangeText={setName}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        autoComplete={"email"}
-                        placeholder={"Email"}
-                        onChangeText={setEmail}
-                        autoCapitalize={"none"}
-
-
-                    />
-                    <View style={
-                      styles.inputPassword
-                    }>
+                    <View style={{marginTop: 30}}>
                         <TextInput
-                            style={{width:"95%"}}
-                            autoComplete={"password"}
-                            placeholder={"Mot de passe"}
-                            onChangeText={setPassword}
+                            style={styles.input}
+                            placeholder={"Nom"}
+                            onChangeText={setName}
+                        />
+
+                        {
+                            errorEmail && (
+                                <Text style={styles.errorText}>Votre email est invalide</Text>
+                            )
+                        }
+
+                        <TextInput
+                            style={styles.input}
+                            autoComplete={"email"}
+                            placeholder={"Email"}
+                            onChangeText={setEmail}
+                            onChange={()=>setErrorEmail(false)}
                             autoCapitalize={"none"}
-                            secureTextEntry={showPassword}
+                            keyboardType={"email-address"}
+
 
                         />
-                        <TouchableOpacity onPress={()=>setShowPassword(!showPassword)}>
-                            <Icon  name={showPassword ? 'eye-slash' : 'eye'} size={20} color="grey"/>
-                        </TouchableOpacity>
-                    </View>
 
-                    <View style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-around",
-                        marginTop: 20
-                    }}>
-                        <View style={styles.toggle}>
+                        {
+                            errorPassword && (
+                                <Text style={styles.errorText}>Votre mot de passe doit faire plus de 5 caractères et doit
+                                    contenir une
+                                    majuscule</Text>
+                            )
+                        }
+                        <View style={
+                            styles.inputPassword
+                        }>
 
-                            <Text>Client : </Text>
-                            <Switch color={"#BEAA6F"} value={isClient} onValueChange={handleIsClient}/>
+                            <TextInput
+                                style={{width: "95%"}}
+                                autoComplete={"password"}
+                                placeholder={"Mot de passe"}
+                                onChange={()=>setErrorPassword(false)}
+                                onChangeText={setPassword}
+                                autoCapitalize={"none"}
+                                secureTextEntry={showPassword}
+
+                            />
+                            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                                <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="grey"/>
+                            </TouchableOpacity>
                         </View>
-                        <View style={styles.toggle}>
-                            <Text>Revendeur: </Text>
-                            <Switch color={"#BEAA6F"} value={isRevendeur} onValueChange={handleIsRevendeur}/>
+
+                        <View style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-around",
+                            marginTop: 20
+                        }}>
+                            <View style={styles.toggle}>
+
+                                <Text>Client : </Text>
+                                <Switch color={"#BEAA6F"} value={isClient} onValueChange={handleIsClient}/>
+                            </View>
+                            <View style={styles.toggle}>
+                                <Text>Revendeur: </Text>
+                                <Switch color={"#BEAA6F"} value={isRevendeur} onValueChange={handleIsRevendeur}/>
+                            </View>
                         </View>
-                    </View>
 
-                    <View style={styles.containerButton}>
-                        <Pressable style={styles.buttonSignUp}><Text
-                            style={styles.buttonText}>S'inscrire</Text></Pressable>
-                        <Pressable><Text>Mot de passe oublié ?</Text></Pressable>
-                    </View>
+                        <View style={styles.containerButton}>
+                            <Pressable onPress={handleSubmit} style={styles.buttonSignUp}><Text
+                                style={styles.buttonText}>S'inscrire</Text></Pressable>
+                        </View>
 
+                    </View>
                 </View>
-            </View>
-                </TouchableWithoutFeedback >
+            </TouchableWithoutFeedback>
 
         </SafeAreaView>
     );
 };
 
 
-const styles = StyleSheet.create(
-    {
-        statusBar: {
-            color: "black"
-        },
-        header: {
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            marginTop: 30,
-            alignItems: "center",
-        },
-        headerTitle: {
-            fontSize: 40,
-            width: "65%",
-            textAlign: "center"
-        },
-        headerSignIn: {
-            color: "#BEAA6F",
-            width: "15%",
-            fontSize: 11
-        },
-        headerLogo: {
-            width: "15%",
 
-
-        },
-        input: {
-            height: 40,
-            margin: 12,
-            borderWidth: 0.2,
-            borderColor: "#BDBDBD",
-            borderRadius: 10,
-            padding: 10,
-
-        },
-        inputPassword: {
-            height: 40,
-            margin: 12,
-            padding: 10,
-            flexDirection: 'row', alignItems: 'center',
-            borderWidth: 0.2,
-            borderColor: "#BDBDBD",
-            borderRadius: 10,
-        },
-        toggle: {
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center"
-        },
-        containerButton: {
-            display: "flex",
-            alignItems: "center",
-            marginTop: 30,
-            height: 80,
-            justifyContent: "space-between"
-        },
-        buttonSignUp: {
-            borderRadius: 30,
-            backgroundColor: "#BEAA6F",
-            height: 50,
-            width: "90%",
-            display: "flex",
-            justifyContent: "center",
-
-            alignItems: "center"
-        },
-        buttonText: {
-            textAlign: "center",
-            color: "#ffff",
-            fontWeight: "bold",
-        }
-
-    }
-)
 export default SignUp;
