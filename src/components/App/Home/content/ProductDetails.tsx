@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable} from "react-native";
+import {View, Text, StyleSheet, Pressable, Image, ImageBackground} from "react-native";
 import Container from "../../Reusable/Container";
 import {Camera, CameraType} from "expo-camera";
 import CameraDetails from "./CameraDetails";
@@ -13,7 +13,7 @@ const ProductDetails: React.FC = ({route}) => {
     const [type, setType] = useState(CameraType.back);
 
 
-    const {property} = route.params
+    const {property, image} = route.params
 
 
     // Fonction pour ouvrir l'appareil photo
@@ -34,18 +34,24 @@ const ProductDetails: React.FC = ({route}) => {
     return (
         <>
 
-            <Container color={showCamera ? "black" :"white"}>
+            <Container color={showCamera ? "black" : "white"}>
                 {
                     showCamera ? <CameraDetails setShowCamera={setShowCamera}/> :
                         <View style={styles.container}>
                             <View style={styles.container_header}>
                                 <Text style={styles.title}>{property.title}</Text>
-                                <View style={styles.image_box}></View>
+                                <View style={styles.image_box}>
+                                    <ImageBackground source={{uri: image}} resizeMode="center" style={styles.image}/>
+                                </View>
                             </View>
 
                             <View style={styles.details}>
-                                <Text>Prix : {property.price}€</Text>
-                                <Text>Dimension : {property.dimension}</Text>
+                                <Text> <Text style={{fontWeight: "bold"}}>Prix</Text> : {property.details.price}€</Text>
+                                <Text><Text
+                                    style={{fontWeight: "bold"}}>Description</Text> : {property.details.description}
+                                </Text>
+                                <Text><Text style={{fontWeight: "bold"}}>Color </Text>: {property.details.color}</Text>
+                                <Text><Text style={{fontWeight: "bold"}}>Stock </Text>: {property.stock}</Text>
                             </View>
 
                             <View style={styles.containerButton}>
@@ -81,14 +87,18 @@ const styles = StyleSheet.create({
     image_box: {
         width: "100%",
         height: 200,
-        backgroundColor: "#F6F6F6",
-        borderRadius: 10
+        borderRadius: 10,
+    },
+    image: {
+        flex: 1,
+        justifyContent: 'center',
     },
     details: {
         display: "flex",
         justifyContent: "space-around",
         flexDirection: "column",
-        marginTop: 30
+        marginTop: 30,
+        height: 150
     },
     button: {
         borderRadius: 30,

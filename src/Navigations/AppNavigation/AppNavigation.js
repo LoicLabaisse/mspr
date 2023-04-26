@@ -10,7 +10,7 @@ export const HomeNavigation = () => {
         <HomeStack.Navigator>
             <HomeStack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
             <HomeStack.Screen name="ProductsDetails" component={ProductDetails}
-                              options={ {headerShown:false}}/>
+                              options={ {headerTitle:"", headerShadowVisible:false}}/>
         </HomeStack.Navigator>
     );
 };

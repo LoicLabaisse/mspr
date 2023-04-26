@@ -26,20 +26,13 @@ const SignUp: React.FC = () => {
 
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
     const [isClient, setIsClient] = useState<boolean>(true);
     const [isRevendeur, setIsRevendeur] = useState<boolean>(false);
     const regex = /^[^\s@]+@[^\s@]+\.(com|fr)$/i;
-    const regexMajuscule = /^(?=.*[A-Z]).{5,}$/;
 
     // Gestion d'erreur
 
-    const [errorPassword, setErrorPassword] = useState<boolean>(false)
     const [errorEmail, setErrorEmail] = useState<boolean>(false)
-    const [errorStatus,setErrorStatus]= useState<boolean>(false)
-
-
-    const [showPassword, setShowPassword] = useState<boolean>(true)
 
 
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -56,37 +49,16 @@ const SignUp: React.FC = () => {
 
 
     const handleSubmit = () => {
-
-        // Vérification du status Client ou Revendeur
-        if(!isClient && !isRevendeur){
-            Alert.alert('Attention !', 'Tu doit avoir au moins un status pour pouvoir continuer ( Client / Revendeur )', [
-                {
-                    text: 'Annuler',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                },
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ]);
-        }else{
-            // Vérification de l'email
-            if (regex.test(email)) {
-                console.log("l'adresse email est valide")
-                // Verification du mot de passe (5 caractères mini / une majuscule)
-                if (regexMajuscule.test(password)) {
-                    console.log("le mot de passe est valide")
-                    // appel axios du back
-                } else {
-                    console.log("le mot de passe n'est pas valide")
-                    setErrorPassword(true)
-                }
-
-            } else {
-                console.log("l'adresse email est invalide")
-                setErrorEmail(true)
-            }
-        }
-
-
+        navigation.navigate("QRCode")
+        // // Vérification de l'email
+        // if (regex.test(email)) {
+        //     console.log("l'adresse email est valide")
+        //     // Verification du mot de passe (5 caractères mini / une majuscule)
+        //     // appel axios
+        // } else {
+        //     console.log("l'adresse email est invalide")
+        //     setErrorEmail(true)
+        // }
     }
 
     return (
@@ -119,55 +91,13 @@ const SignUp: React.FC = () => {
                             autoComplete={"email"}
                             placeholder={"Email"}
                             onChangeText={setEmail}
-                            onChange={()=>setErrorEmail(false)}
+                            onChange={() => setErrorEmail(false)}
                             autoCapitalize={"none"}
                             keyboardType={"email-address"}
 
 
                         />
 
-                        {
-                            errorPassword && (
-                                <Text style={styles.errorText}>Votre mot de passe doit faire plus de 5 caractères et doit
-                                    contenir une
-                                    majuscule</Text>
-                            )
-                        }
-                        <View style={
-                            styles.inputPassword
-                        }>
-
-                            <TextInput
-                                style={{width: "95%"}}
-                                autoComplete={"password"}
-                                placeholder={"Mot de passe"}
-                                onChange={()=>setErrorPassword(false)}
-                                onChangeText={setPassword}
-                                autoCapitalize={"none"}
-                                secureTextEntry={showPassword}
-
-                            />
-                            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                                <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="grey"/>
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-around",
-                            marginTop: 20
-                        }}>
-                            <View style={styles.toggle}>
-
-                                <Text>Client : </Text>
-                                <Switch color={"#BEAA6F"} value={isClient} onValueChange={handleIsClient}/>
-                            </View>
-                            <View style={styles.toggle}>
-                                <Text>Revendeur: </Text>
-                                <Switch color={"#BEAA6F"} value={isRevendeur} onValueChange={handleIsRevendeur}/>
-                            </View>
-                        </View>
 
                         <View style={styles.containerButton}>
                             <Pressable onPress={handleSubmit} style={styles.buttonSignUp}><Text
@@ -181,7 +111,6 @@ const SignUp: React.FC = () => {
         </SafeAreaView>
     );
 };
-
 
 
 export default SignUp;

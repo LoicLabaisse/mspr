@@ -8,7 +8,7 @@ import { Icon } from '@rneui/themed';
 
 
 // @ts-ignore
-const CameraDetails = ({setShowCamera}) => {
+const CameraDetails :React.FC = ({setShowCamera}) => {
     return (
         <Camera style={styles.camera}>
             <View style={styles.buttonContainer}>
@@ -23,8 +23,6 @@ const CameraDetails = ({setShowCamera}) => {
             </View>
         </Camera>
     );
-
-
 };
 
 

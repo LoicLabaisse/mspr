@@ -7,6 +7,7 @@ import SignIn from "../components/Login/content/SignIn";
 import MyTabs from "./App.route";
 import {useNavigation} from "@react-navigation/native";
 import ProductDetails from "../components/App/Home/content/ProductDetails";
+import CameraQrCode from "../components/Login/content/content/CameraQRCode";
 
 
 const Stack = createNativeStackNavigator();
@@ -14,7 +15,7 @@ const Stack = createNativeStackNavigator();
 
 const Routes: React.FC = () => {
 
-    const [isAuthenticated,setIsAuthenticated]= useState<boolean>(false);
+    const [isAuthenticated,setIsAuthenticated]= useState<boolean>(true);
     const navigation = useNavigation<NativeStackNavigationProp<any>>();    useEffect(()=> {
        if(!isAuthenticated){
            navigation.navigate("Login")
@@ -29,6 +30,8 @@ const Routes: React.FC = () => {
             <Stack.Screen name="Inscription" component={SignUp} options={{ headerShown: false }}/>
             <Stack.Screen name="Connexion" component={SignIn} options={{ headerShown: false }}/>
             <Stack.Screen name="Home" component={MyTabs}  options={{ headerBackVisible: false,headerShown: false }}/>
+            <Stack.Screen name="QRCode" component={CameraQrCode} options={{ headerShown: false }}/>
+
 
 
         </Stack.Navigator>)
