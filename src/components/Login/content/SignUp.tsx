@@ -49,7 +49,7 @@ const SignUp: React.FC = () => {
 
 
     const handleSubmit = () => {
-        navigation.navigate("QRCode")
+        navigation.navigate("SuccessSignIn")
         // // Vérification de l'email
         // if (regex.test(email)) {
         //     console.log("l'adresse email est valide")

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Text, View, StyleSheet, Button, TouchableOpacity} from 'react-native';
 import {Camera} from 'expo-camera';
 import {BarCodeScanner, BarCodeScannedCallback} from 'expo-barcode-scanner';
@@ -6,10 +6,12 @@ import {Icon} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {color} from "@rneui/base";
+import {TokenContext} from "../../../../Context/Context";
 
 const CameraQrCode: React.FC = () => {
     const [hasPermission, setHasPermission] = useState<boolean | any>(null);
     const [scanned, setScanned] = useState<boolean>(false);
+    const {token,setToken} = useContext(TokenContext);
 
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -25,7 +27,11 @@ const CameraQrCode: React.FC = () => {
     const handleBarCodeScanned :BarCodeScannedCallback = ({type, data}) => {
         setScanned(true)
 
+        setToken(data)
         // mettre tous le system de redirection ect verification du token ici
+        if (token !== ""){
+            navigation.navigate('Home')
+        }
         alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
 
@@ -35,6 +41,8 @@ const CameraQrCode: React.FC = () => {
     if (hasPermission === false) {
         return <Text>No access to camera</Text>;
     }
+
+
     return (
         <View style={styles.container}>
             <BarCodeScanner
@@ -44,7 +52,7 @@ const CameraQrCode: React.FC = () => {
             <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                    navigation.navigate("Inscription")
+                    navigation.navigate("SuccessSignIn")
                 }}
             >
 

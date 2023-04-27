@@ -55,8 +55,8 @@ const styles = StyleSheet.create(
             display: "flex",
             alignItems: "center",
             marginTop: 30,
-            height: 80,
-            justifyContent: "space-between"
+            height: 120,
+            justifyContent: "space-between",
         },
         buttonSignUp: {
             borderRadius: 30,

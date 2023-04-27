@@ -2,7 +2,7 @@ import React from 'react';
 import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import {IProducts} from "../../interface/products.interface";
+import {IProducts} from "../../../interface/products.interface";
 
 
 const SlideProducts:React.FC<IProducts | any>= (props, context) => {

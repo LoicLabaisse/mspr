@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
     Alert,
     Keyboard, Pressable,
@@ -16,11 +16,15 @@ import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 // @ts-ignore
 import Icon from "react-native-vector-icons/FontAwesome";
 import styles from "./SignInStyle";
+import {StatusContext} from "../../../Context/Context";
 
 const SignIn: React.FC = () => {
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const {client,setClient} = useContext(StatusContext)
+    const {revendeur,setRevendeur} = useContext(StatusContext)
+
 
     // Gestion d'erreur
     const [errorBoth, setErrorBoth] = useState<boolean>(false)
@@ -30,24 +34,21 @@ const SignIn: React.FC = () => {
 
     const [showPassword, setShowPassword] = useState<boolean>(true)
 
+    const handleIsClient = () => {
+        setClient(true);
+        setRevendeur(false)
+    }
+    const handleIsRevendeur = () => {
+        setClient(false);
+        setRevendeur(true)
+    }
+
+    console.log(client)
+
+    console.log(revendeur)
 
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
-    const handleSubmit = () => {
-
-
-        if (email === "" || password === "") {
-            console.log("Veuillez rentrer vos identifiants")
-            setErrorBoth(true)
-        } else {
-            console.log(email)
-            console.log(password)
-            navigation.navigate("Home")
-        }
-
-
-        // Appel axios + vérification des status
-    }
     return (
         <SafeAreaView style={{flex: 1}}>
             <StatusBar barStyle={"dark-content"}/>
@@ -61,64 +62,30 @@ const SignIn: React.FC = () => {
                     </View>
 
                     <View style={{marginTop: 30}}>
-                        {
-                            errorBoth && (
-                                <Text style={styles.errorText}>Veuillez rentrer vos identifiants</Text>
-                            )
-                        }
-
-                        {
-                            errorEmail && (
-                                <Text style={styles.errorText}>Votre email est invalide</Text>
-                            )
-                        }
-
-                        <TextInput
-                            style={styles.input}
-                            autoComplete={"email"}
-                            placeholder={"Email"}
-                            keyboardType={"email-address"}
-                            onChangeText={setEmail}
-                            onChange={() => {
-                                setErrorEmail(false);
-                                setErrorBoth(false)
-                            }}
-                            autoCapitalize={"none"}
 
 
-                        />
-
-                        {
-                            errorPassword && (
-                                <Text style={styles.errorText}>Votre mot de passe est incorrect</Text>
-                            )
-                        }
-                        <View style={
-                            styles.inputPassword
-                        }>
-
-                            <TextInput
-                                style={{width: "95%"}}
-                                autoComplete={"password"}
-                                placeholder={"Mot de passe"}
-                                onChange={() => {
-                                    setErrorPassword(false);
-                                    setErrorBoth(false)
-                                }}
-                                onChangeText={setPassword}
-                                autoCapitalize={"none"}
-                                secureTextEntry={showPassword}
-
-                            />
-                            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                                <Icon name={showPassword ? 'eye-slash' : 'eye'} size={20} color="grey"/>
-                            </TouchableOpacity>
-                        </View>
+                        <Text style={{textAlign:"center"}}>Choisissez votre status :</Text>
 
                         <View style={styles.containerButton}>
-                            <Pressable onPress={handleSubmit} style={styles.buttonSignUp}><Text
+                            <View style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                marginTop: 20,
+                                width:"80%"
+                            }}>
+                                <View style={styles.toggle}>
+
+                                    <Text>Client : </Text>
+                                    <Switch color={"#BEAA6F"} value={client} onValueChange={handleIsClient}/>
+                                </View>
+                                <View style={styles.toggle}>
+                                    <Text>Revendeur: </Text>
+                                    <Switch color={"#BEAA6F"} value={revendeur} onValueChange={handleIsRevendeur}/>
+                                </View>
+                            </View>
+                            <Pressable onPress={()=> navigation.navigate("QRCode")} style={styles.buttonSignUp}><Text
                                 style={styles.buttonText}>Connexion</Text></Pressable>
-                            <Pressable><Text>Mot de passe oublié ?</Text></Pressable>
                         </View>
 
                     </View>

@@ -1,93 +1,63 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, SectionList, ScrollView, Image, TouchableOpacity} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {View, Text, StyleSheet, SectionList, ScrollView, Image, TouchableOpacity, RefreshControl} from 'react-native';
 import Container from "../Reusable/Container";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {IProducts} from "../interface/products.interface";
 import axios from "axios";
-import SlideProducts from "./content/SlideProducts";
+import SlideProducts from "./content/content/SlideProducts";
+import {StatusContext, TokenContext} from "../../../Context/Context";
+import ViewClient from "./content/ViewClient";
+import ViewRevendeur from "./content/ViewRevendeur";
 
 const HomeScreen: React.FC = () => {
 
-    const [products, setProducts] = useState<Array<IProducts>>([])
+    const {token} = useContext(TokenContext);
+    const {client, revendeur} = useContext(StatusContext)
+    const [refreshing, setRefreshing] = useState<boolean>(false);
 
-
-    useEffect(() => {
-        axios.post("http://ec2-3-91-173-134.compute-1.amazonaws.com:4200/products/findAll").then(r => setProducts(r.data.Data[0])).catch(error => console.log(error))
-    }, [])
-
-    const CoffeeMachineImages = [
-        'https://st2.depositphotos.com/1006753/7917/i/600/depositphotos_79175894-stock-photo-red-coffee-machine.jpg',
-        'https://static4.depositphotos.com/1013245/356/i/600/depositphotos_3561181-stock-photo-modern-coffee-machine-maker-isolated.jpg',
-        'https://st3.depositphotos.com/1177973/13892/i/600/depositphotos_138923110-stock-photo-modern-coffee-machine.jpg',
-        'https://static9.depositphotos.com/1059523/1091/i/600/depositphotos_10913385-stock-photo-black-coffee-maker.jpg',
-        'https://st2.depositphotos.com/1000415/6714/i/600/depositphotos_67145081-stock-photo-coffee-machine.jpg',
-        "https://st3.depositphotos.com/7221444/16603/i/600/depositphotos_166033946-stock-photo-black-espresso-maker.jpg",
-        "https://st4.depositphotos.com/1766687/20621/i/600/depositphotos_206218676-stock-photo-coffee-maker-isolated-white-background.jpg," +
-        "https://st.depositphotos.com/1004328/1281/i/600/depositphotos_12811227-stock-photo-coffee-machine-and-cup.jpg",
-        "https://st2.depositphotos.com/1000415/6714/i/600/depositphotos_67145121-stock-photo-coffee-machine.jpg",
-        "https://st.depositphotos.com/1034582/3689/i/600/depositphotos_36892653-stock-photo-coffee-machine.jpg"
-    ];
-
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 2000);
+    }, []);
 
     return (
         <Container color={"white"}>
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.container}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>
+                        }
+            >
                 <View style={{
                     padding: 10
                 }}>
 
                     <Text style={styles.title}>Accueil</Text>
-                    <Text style={styles.item_title}>Produits</Text>
-
-                    <ScrollView showsHorizontalScrollIndicator={false} style={styles.container} horizontal={true}>
                     {
-                        products.map((m, index) => {
+                        token ==="" ? <Text>No token</Text> :
+                            <>
+                                {
+                                    client && (
+                                        <>
+                                        <ViewClient/>
+                                        </>
+                                    )
+                                }
 
-                            if (index < 10) {
-                                return <>
-                                    <SlideProducts createdAt={m.createdAt} details={m.details} id={m.id} name={m.name}
-                                                   stock={m.stock} image={CoffeeMachineImages[Math.floor(Math.random() * 5)]}/>
-                                </>
-                            } else {
-                                return null
-                            }
+                                {
+                                    revendeur &&(
+                                        <View>
+                                           <ViewRevendeur/>
 
-                        })
+                                        </View>
+                                    )
+                                }
+
+                            </>
                     }
-                    </ScrollView>
-                    <ScrollView showsHorizontalScrollIndicator={false} style={styles.container} horizontal={true}>
-                        {
-                            products.map((m, index) => {
 
-                                if (index >= 10 && index < 20) {
-                                    return <>
-                                        <SlideProducts createdAt={m.createdAt} details={m.details} id={m.id} name={m.name}
-                                                       stock={m.stock} image={CoffeeMachineImages[Math.floor(Math.random() * 5)]}/>
-                                    </>
-                                } else {
-                                    return null
-                                }
-
-                            })
-                        }
-                    </ScrollView>
-                    <ScrollView showsHorizontalScrollIndicator={false} style={styles.container} horizontal={true}>
-                        {
-                            products.map((m, index) => {
-
-                                if (index >= 20 && index < 30) {
-                                    return <>
-                                        <SlideProducts createdAt={m.createdAt} details={m.details} id={m.id} name={m.name}
-                                                       stock={m.stock} image={CoffeeMachineImages[Math.floor(Math.random() * 5)]}/>
-                                    </>
-                                } else {
-                                    return null
-                                }
-
-                            })
-                        }
-                    </ScrollView>
 
                 </View>
             </ScrollView>

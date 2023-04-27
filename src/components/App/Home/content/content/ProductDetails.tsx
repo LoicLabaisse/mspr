@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Image, ImageBackground} from "react-native";
-import Container from "../../Reusable/Container";
+import Container from "../../../Reusable/Container";
 import {Camera, CameraType} from "expo-camera";
 import CameraDetails from "./CameraDetails";
 
