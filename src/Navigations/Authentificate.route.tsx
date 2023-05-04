@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {NativeRouter, Route, Link} from "react-router-native";
 import LoginHome from "../components/Login/LoginHome";
 import {createNativeStackNavigator, NativeStackNavigationProp} from '@react-navigation/native-stack';
@@ -9,12 +9,26 @@ import {useNavigation} from "@react-navigation/native";
 import ProductDetails from "../components/App/Home/content/content/ProductDetails";
 import CameraQrCode from "../components/Login/content/content/CameraQRCode";
 import SuccessSignUp from "../components/Login/content/content/SuccessSignUp";
+import {StatusContext} from "../Context/Context";
 
 
 const Stack = createNativeStackNavigator();
 
 
 const Routes: React.FC = () => {
+
+    const {isLogin}= useContext(StatusContext)
+    const navigation = useNavigation<NativeStackNavigationProp<any>>();
+
+
+    useEffect(()=> {
+        if(isLogin){
+            navigation.navigate("Home")
+        }else{
+            navigation.navigate("Login")
+
+        }
+    },[])
 
 
     return (

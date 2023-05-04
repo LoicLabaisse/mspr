@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, Pressable, Image, ImageBackground} from "react-native";
+import {View, Text, StyleSheet, Pressable, Image, ImageBackground, ScrollView} from "react-native";
 import Container from "../../../Reusable/Container";
 import {Camera, CameraType} from "expo-camera";
 import CameraDetails from "./CameraDetails";
+import D from "./3D";
+
+
 
 
 // @ts-ignore
@@ -26,6 +29,11 @@ const ProductDetails: React.FC = ({route}) => {
         }, 1000)
 
     };
+    const [isLoading, setIsLoading] = useState(true);
+
+    const onLoad = () => {
+        setIsLoading(false);
+    };
 
     function toggleCameraType() {
         setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
@@ -35,6 +43,7 @@ const ProductDetails: React.FC = ({route}) => {
         <>
 
             <Container color={showCamera ? "black" : "white"}>
+                <ScrollView>
                 {
                     showCamera ? <CameraDetails setShowCamera={setShowCamera}/> :
                         <View style={styles.container}>
@@ -60,10 +69,14 @@ const ProductDetails: React.FC = ({route}) => {
                                     en 3D</Text></Pressable>
                             </View>
 
+                            <D/>
 
                         </View>
 
+
+
                 }
+                </ScrollView>
             </Container>
 
         </>

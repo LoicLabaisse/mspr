@@ -43,9 +43,6 @@ const SignIn: React.FC = () => {
         setRevendeur(true)
     }
 
-    console.log(client)
-
-    console.log(revendeur)
 
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 

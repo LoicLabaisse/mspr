@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
     SafeAreaView,
     View,
@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import {RadioButton, Switch} from 'react-native-paper';
 import styles from "./SignInStyle";
+// @ts-ignore
+import {REACT_APP_API} from "@env"
 
 
 // @ts-ignore
@@ -21,6 +23,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import axios from "axios";
+import {StatusContext} from "../../../Context/Context";
 
 const SignUp: React.FC = () => {
 
@@ -30,6 +34,7 @@ const SignUp: React.FC = () => {
     const [isRevendeur, setIsRevendeur] = useState<boolean>(false);
     const regex = /^[^\s@]+@[^\s@]+\.(com|fr)$/i;
 
+
     // Gestion d'erreur
 
     const [errorEmail, setErrorEmail] = useState<boolean>(false)
@@ -38,27 +43,23 @@ const SignUp: React.FC = () => {
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
 
-    const handleIsClient = () => {
-        setIsClient(!isClient);
-        setIsRevendeur(false)
-    }
-    const handleIsRevendeur = () => {
-        setIsClient(false);
-        setIsRevendeur(!isRevendeur)
-    }
+
 
 
     const handleSubmit = () => {
-        navigation.navigate("SuccessSignIn")
-        // // Vérification de l'email
-        // if (regex.test(email)) {
-        //     console.log("l'adresse email est valide")
-        //     // Verification du mot de passe (5 caractères mini / une majuscule)
-        //     // appel axios
-        // } else {
-        //     console.log("l'adresse email est invalide")
-        //     setErrorEmail(true)
-        // }
+
+     // Appel axios
+
+        axios.post(`${REACT_APP_API}user/login`, {
+            email: email,
+            name: name
+        }).then(r => {
+            if(r.status === 200){
+
+
+                navigation.navigate("SuccessSignIn")
+            }
+        }).catch(e => console.log(e))
     }
 
     return (

@@ -6,15 +6,21 @@ interface ITokenContext {
 }
 
 interface  IStatusContext {
+    isLogin:boolean
     revendeur:boolean,
     client:boolean,
+    setIsLogin:(isLogin:boolean)=>void,
     setRevendeur: (revendeur:boolean)=>void,
     setClient: (client:boolean)=>void,
 }
 
+
+
 export const StatusContext = createContext<IStatusContext>({
+    isLogin:false,
     revendeur:false,
     client:true,
+    setIsLogin:()=>{},
     setRevendeur: ()=> {},
     setClient: ()=> {},
 })

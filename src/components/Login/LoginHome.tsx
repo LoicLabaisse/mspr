@@ -1,11 +1,16 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import {Pressable, SafeAreaView, StyleSheet, Text, View,Image} from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import {StatusContext} from "../../Context/Context";
 
 
 const LoginHome: React.FC = () => {
 
     const navigation = useNavigation()
+
+    const {isLogin}= useContext(StatusContext)
+
+    console.log(isLogin)
 
     const handleSignUp = ()=> {
         // @ts-ignore

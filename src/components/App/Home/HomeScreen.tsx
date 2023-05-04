@@ -23,6 +23,9 @@ const HomeScreen: React.FC = () => {
         }, 2000);
     }, []);
 
+    const {isLogin}= useContext(StatusContext)
+
+   console.log(isLogin)
     return (
         <Container color={"white"}>
             <ScrollView showsVerticalScrollIndicator={false} style={styles.container}

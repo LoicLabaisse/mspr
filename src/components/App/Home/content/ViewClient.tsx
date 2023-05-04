@@ -22,7 +22,11 @@ const ViewClient :React.FC = () => {
 
         if (token !== "") {
             // @ts-ignore
-            axios.post(`${REACT_APP_API}products/findAll`).then(r => setProducts(r.data.Data[0])).catch(error => console.log(error.message))
+            axios.post(`${REACT_APP_API}products/findAll`,{},{
+                headers: {
+                    'Authorization': token
+                }
+            }).then(r => setProducts(r.data.Data[0])).catch(error => console.log(error.message))
         } else {
             setNoToken(true)
         }

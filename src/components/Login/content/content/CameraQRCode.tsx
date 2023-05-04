@@ -6,12 +6,14 @@ import {Icon} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {color} from "@rneui/base";
-import {TokenContext} from "../../../../Context/Context";
+import {StatusContext, TokenContext} from "../../../../Context/Context";
 
 const CameraQrCode: React.FC = () => {
     const [hasPermission, setHasPermission] = useState<boolean | any>(null);
     const [scanned, setScanned] = useState<boolean>(false);
     const {token,setToken} = useContext(TokenContext);
+    const {setIsLogin}= useContext(StatusContext)
+
 
     const navigation = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -29,10 +31,14 @@ const CameraQrCode: React.FC = () => {
 
         setToken(data)
         // mettre tous le system de redirection ect verification du token ici
-        if (token !== ""){
-            navigation.navigate('Home')
-        }
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
+           if (data !== ""){
+               setIsLogin(true)
+               navigation.navigate('Home')
+           }
+
+
+
     };
 
     if (hasPermission === null) {
