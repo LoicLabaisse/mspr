@@ -1,0 +1,21 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl FrontColor
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.330000 0.330000 0.330000
+
+newmtl jura_giga_x3pro
+Ka 0.000000 0.000000 0.000000
+Kd 0.184314 0.180392 0.184314
+Ks 0.330000 0.330000 0.330000
+map_Kd machine_a_cafe/jura_giga_x3pro.jpg
+
+newmtl _41
+Ka 0.000000 0.000000 0.000000
+Kd 0.756863 0.756863 0.756863
+Ks 0.330000 0.330000 0.330000
+map_Kd machine_a_cafe/_41.jpg
+

@@ -20,7 +20,7 @@ const ViewRevendeur: React.FC = () => {
 
 
 
-    const handleShowDetails=(index: React.SetStateAction<number | undefined>)=> {
+    const handleShowDetails=(index: number | undefined)=> {
         if (show === index) {
             setShow(null);
         } else {
@@ -47,9 +47,9 @@ const ViewRevendeur: React.FC = () => {
                       <View style={styles.boxProducts}>
                           <View style={{display:"flex", flexDirection:"row",width:"100%",justifyContent:"space-between"}} >
                           <Text style={styles.boxProducts_Text}>Nom : {m.product.name}</Text>
-                          {
-                              show ===index ? <Icon size={20} color={"#fff"}  name={"chevron-down-outline"}/>:<Icon color={"#fff"} size={20} name={"chevron-forward-outline"}/>
-                          }
+                          {/*{*/}
+                          {/*    show ===index ? <Icon size={20} color={"#fff"}  name={"chevron-down-outline"}/>:<Icon color={"#fff"} size={20} name={"chevron-forward-outline"}/>*/}
+                          {/*}*/}
                           </View>
 
                           <Text style={{color:"white"}}>Commande du client : <Text style={{fontWeight:"bold",color:"white"}}>{m.id}</Text></Text>

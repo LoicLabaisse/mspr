@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {Suspense, useState} from 'react';
 import {View, Text, StyleSheet, Pressable, Image, ImageBackground, ScrollView} from "react-native";
 import Container from "../../../Reusable/Container";
 import {Camera, CameraType} from "expo-camera";
 import CameraDetails from "./CameraDetails";
 import D from "./3D";
+import {Canvas} from "@react-three/fiber";
 
 
 
@@ -41,43 +42,46 @@ const ProductDetails: React.FC = ({route}) => {
 
     return (
         <>
+            {
+                showCamera ? <CameraDetails setShowCamera={setShowCamera}/> :
 
-            <Container color={showCamera ? "black" : "white"}>
-                <ScrollView>
-                {
-                    showCamera ? <CameraDetails setShowCamera={setShowCamera}/> :
-                        <View style={styles.container}>
-                            <View style={styles.container_header}>
-                                <Text style={styles.title}>{property.title}</Text>
-                                <View style={styles.image_box}>
-                                    <ImageBackground source={{uri: image}} resizeMode="center" style={styles.image}/>
+                    <Container color={showCamera ? "" : "white"}>
+                        <ScrollView>
+
+                            <View style={styles.container}>
+                                <View style={styles.container_header}>
+                                    <Text style={styles.title}>{property.title}</Text>
+                                    <View style={styles.image_box}>
+                                        <ImageBackground source={{uri: image}} resizeMode="center"
+                                                         style={styles.image}/>
+                                    </View>
                                 </View>
+
+                                <View style={styles.details}>
+                                    <Text> <Text
+                                        style={{fontWeight: "bold"}}>Prix</Text> : {property.details.price}€</Text>
+                                    <Text><Text
+                                        style={{fontWeight: "bold"}}>Description</Text> : {property.details.description}
+                                    </Text>
+                                    <Text><Text style={{fontWeight: "bold"}}>Color </Text>: {property.details.color}
+                                    </Text>
+                                    <Text><Text style={{fontWeight: "bold"}}>Stock </Text>: {property.stock}</Text>
+                                </View>
+
+                                <View style={styles.containerButton}>
+                                    <Pressable onPress={handlePermission} style={styles.button}><Text
+                                        style={styles.textButton}>Vision
+                                        en 3D</Text></Pressable>
+                                </View>
+
+
                             </View>
 
-                            <View style={styles.details}>
-                                <Text> <Text style={{fontWeight: "bold"}}>Prix</Text> : {property.details.price}€</Text>
-                                <Text><Text
-                                    style={{fontWeight: "bold"}}>Description</Text> : {property.details.description}
-                                </Text>
-                                <Text><Text style={{fontWeight: "bold"}}>Color </Text>: {property.details.color}</Text>
-                                <Text><Text style={{fontWeight: "bold"}}>Stock </Text>: {property.stock}</Text>
-                            </View>
-
-                            <View style={styles.containerButton}>
-                                <Pressable onPress={handlePermission} style={styles.button}><Text
-                                    style={styles.textButton}>Vision
-                                    en 3D</Text></Pressable>
-                            </View>
-
-                            <D/>
-
-                        </View>
+                        </ScrollView>
 
 
-
-                }
-                </ScrollView>
-            </Container>
+                    </Container>
+            }
 
         </>
     );

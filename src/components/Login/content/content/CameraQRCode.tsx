@@ -5,7 +5,6 @@ import {BarCodeScanner, BarCodeScannedCallback} from 'expo-barcode-scanner';
 import {Icon} from "@rneui/themed";
 import {useNavigation} from "@react-navigation/native";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-import {color} from "@rneui/base";
 import {StatusContext, TokenContext} from "../../../../Context/Context";
 
 const CameraQrCode: React.FC = () => {
