@@ -9,10 +9,12 @@ import {Canvas } from "@react-three/fiber";
 import Vuedimension from "./3D";
 
 
-
+interface CameraDetailsProps {
+    setShowCamera: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 // @ts-ignore
-const CameraDetails :React.FC = ({setShowCamera}) => {
+const CameraDetails :React.FC<CameraDetailsProps> = ({setShowCamera}) => {
     return (
         <View style={styles.container}>
         <Camera style={styles.camera}>
@@ -29,11 +31,17 @@ const CameraDetails :React.FC = ({setShowCamera}) => {
             </View>
 
 
-            <Canvas>
-                <ambientLight/>
-                <pointLight position={[10,10,10]}/>
-                <Vuedimension position={[0, 0, 0]}/>
+            <Canvas >
+
+                <ambientLight />
+                <pointLight position={[10, 10, 10]} />
+                <Suspense  fallback={null}>
+
+                <Vuedimension/>
+                </Suspense>
+
             </Canvas>
+            <Text>ok</Text>
         </Camera>
         </View>
     );
@@ -49,6 +57,7 @@ const styles = StyleSheet.create({
     },
     camera: {
         flex: 1,
+        backgroundColor:'red'
     },
     buttonContainer: {
         backgroundColor: 'transparent',

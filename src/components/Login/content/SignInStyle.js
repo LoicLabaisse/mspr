@@ -32,7 +32,6 @@ const styles = StyleSheet.create(
             borderColor: "#BDBDBD",
             borderRadius: 10,
             padding: 10,
-            backgroundColor: "#F6F6F6"
 
         },
         inputPassword: {

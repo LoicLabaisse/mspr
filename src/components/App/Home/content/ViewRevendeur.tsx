@@ -4,7 +4,7 @@ import axios from "axios";
 import {TokenContext} from "../../../../Context/Context";
 
 // @ts-ignore
-import {REACT_APP_API} from "@env"
+import {REACT_APP_API_REVENDEUR} from "@env"
 import moment from "moment";
 import 'moment/locale/fr'
 import {Order} from "../../interface/user.interface";
@@ -30,7 +30,7 @@ const ViewRevendeur: React.FC = () => {
 
     useEffect(() => {
 
-        axios.post(`${REACT_APP_API}user/orders/find`, {}, {
+        axios.post(`${REACT_APP_API_REVENDEUR}user/orders/find`, {}, {
             headers: {
                 'Authorization': token
             }

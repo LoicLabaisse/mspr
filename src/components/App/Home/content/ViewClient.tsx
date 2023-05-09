@@ -15,8 +15,7 @@ const ViewClient :React.FC = () => {
     const [products, setProducts] = useState<Array<IProducts>>([])
 
 
-    // @ts-ignore
-    const apiUrl = Constants.expoConfig.extra.apiUrl;
+    console.log(token)
 
     useEffect(() => {
 
